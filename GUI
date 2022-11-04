@@ -1,0 +1,102 @@
+package gui;
+
+import com.company.TicTacToe;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Objects;
+
+public class TTTWindow implements ActionListener {
+    //Random random = new Random();
+    JFrame frame = new JFrame();
+    JPanel titel = new JPanel();
+    JPanel button = new JPanel();
+    JPanel resetpan = new JPanel();
+    JButton reset;
+    public static JLabel textbox = new JLabel();
+    public static JButton[] taste = new JButton[9];
+    public static boolean player1_turn;
+
+    public TTTWindow() {
+
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800,800);
+        frame.getContentPane().setBackground(new Color(50,50,50));
+        frame.setLayout(new BorderLayout());
+        frame.setVisible(true);
+
+        textbox.setBackground(new Color(150,150,150));
+        textbox.setForeground(new Color(25,255,0));
+        textbox.setFont(new Font("Ariel",Font.BOLD,75));
+        textbox.setHorizontalAlignment(JLabel.CENTER);
+        textbox.setText("Sudarshan's TTT");
+        textbox.setOpaque(true);
+
+        titel.setLayout(new BorderLayout());
+        titel.setBounds(0,0,800,100);
+
+        button.setLayout(new GridLayout(3,3));
+        button.setBackground(new Color(150,150,150));
+
+        resetpan.setLayout(new BorderLayout());
+        resetpan.setBounds(0, 0, 100, 800);
+        reset = new JButton();
+        reset.setText("Reset");
+        reset.setSize(100,50);
+        reset.setLocation(0,100);
+        reset.addActionListener(this);
+
+
+        for(int i=0;i<9;i++) {
+            taste[i] = new JButton();
+            button.add(taste[i]);
+            taste[i].setFont(new Font("Ariel",Font.BOLD,120));
+            taste[i].setFocusable(false);
+            taste[i].addActionListener(this);
+        }
+
+        titel.add(textbox);
+        frame.add(reset);
+        frame.add(titel,BorderLayout.NORTH);
+        frame.add(button);
+
+
+
+
+        TicTacToe tictactoe = new TicTacToe();
+        tictactoe.firstTurn();
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for(int i=0;i<9;i++) {
+            if(e.getSource()==taste[i]) {
+                if(player1_turn) {
+                    if(Objects.equals(taste[i].getText(), "")) {
+                        taste[i].setForeground(new Color(255,0,0));
+                        taste[i].setText("X");
+                        player1_turn=false;
+                        textbox.setText("Player 2's turn");
+                        TicTacToe.gameOver();
+                    }
+                }
+                else {
+                    if(Objects.equals(taste[i].getText(), "")) {
+                        taste[i].setForeground(new Color(0,0,255));
+                        taste[i].setText("O");
+                        player1_turn=true;
+                        textbox.setText("Player 1's turn");
+                        TicTacToe.gameOver();
+                    }
+                }
+            }
+        }
+
+    }
+
+    }
+
